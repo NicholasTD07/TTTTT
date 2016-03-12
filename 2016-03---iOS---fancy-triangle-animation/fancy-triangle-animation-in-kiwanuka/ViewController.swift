@@ -12,6 +12,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupGestureRecognizer()
+
+        drawTriangle()
+    }
+
+    func setupGestureRecognizer() {
+        let recognizer = UITapGestureRecognizer(target: self, action: "tapped")
+        view.addGestureRecognizer(recognizer)
+    }
+
+    func tapped() {
         drawTriangle()
     }
 
