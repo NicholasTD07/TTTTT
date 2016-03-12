@@ -18,12 +18,7 @@ class ViewController: UIViewController {
     func drawTriangle() {
         let center = CGPoint(x: view.frame.midX, y: view.frame.midY)
 
-        let path = EquilateralTriangle.pathForTriangle(centeredAt: center, radius: 100)
-
-        let triangle = CAShapeLayer()
-        triangle.path = path.CGPath
-        triangle.fillColor = nil
-        triangle.strokeColor = UIColor.redColor().CGColor
+        let triangle = EquilateralTriangle.layerForTriangle(centeredAt: center, radius: 100, color: UIColor.redColor())
 
         view.layer.addSublayer(triangle)
 
@@ -81,6 +76,16 @@ struct EquilateralTriangle {
         path.closePath()
 
         return path
+    }
+
+    static func layerForTriangle(centeredAt center: CGPoint, radius: Double = 10, color: UIColor) -> CAShapeLayer {
+        let layer = CAShapeLayer()
+
+        layer.path = pathForTriangle(centeredAt: center, radius: radius).CGPath
+        layer.fillColor = nil
+        layer.strokeColor = color.CGColor
+
+        return layer
     }
 }
 
