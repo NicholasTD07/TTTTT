@@ -17,9 +17,8 @@ class ViewController: UIViewController {
 
     func drawTriangle() {
         let center = CGPoint(x: view.frame.midX, y: view.frame.midY)
-        let radius = 100 as Double
 
-        let path = EquilateralTriangle.pathForTriangle(centeredAt: center, radius: radius)
+        let path = EquilateralTriangle.pathForTriangle(centeredAt: center, radius: 100)
 
         let triangle = CAShapeLayer()
         triangle.path = path.CGPath
@@ -27,6 +26,21 @@ class ViewController: UIViewController {
         triangle.strokeColor = UIColor.redColor().CGColor
 
         view.layer.addSublayer(triangle)
+
+        let animation = CABasicAnimation(keyPath: "path")
+
+        animation.toValue = EquilateralTriangle.pathForTriangle(centeredAt: center, radius: 10).CGPath
+        animation.duration = 2
+
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+
+        /**
+        Need the following two lines to make the shape stay in the state of the new path.
+        */
+        animation.fillMode = kCAFillModeBoth
+        animation.removedOnCompletion = false
+
+        triangle.addAnimation(animation, forKey: animation.keyPath)
     }
 }
 
