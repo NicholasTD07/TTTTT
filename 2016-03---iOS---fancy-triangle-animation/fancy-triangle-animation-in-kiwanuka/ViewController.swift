@@ -14,7 +14,7 @@ class ViewController: UIViewController {
 
         setupGestureRecognizer()
 
-        drawTriangle()
+        addTriangleAndAnimate()
     }
 
     func setupGestureRecognizer() {
@@ -23,10 +23,10 @@ class ViewController: UIViewController {
     }
 
     func tapped() {
-        drawTriangle()
+        addTriangleAndAnimate()
     }
 
-    func drawTriangle() {
+    func addTriangleAndAnimate() {
         let center = CGPoint(x: view.frame.midX, y: view.frame.midY)
 
         let triangle = EquilateralTriangle.layerForTriangle(centeredAt: center, radius: 100, color: UIColor.redColor())
