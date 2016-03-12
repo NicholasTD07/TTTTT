@@ -27,10 +27,20 @@ class ViewController: UIViewController {
 
         view.layer.addSublayer(triangle)
 
+        let animation = EquilateralTriangle.pathAnimationToTriangle(centeredAt: center, radius: 10, duration: 2)
+
+        triangle.addAnimation(animation, forKey: nil)
+    }
+}
+
+struct EquilateralTriangle {
+    static let angle = M_PI/3
+
+    static func pathAnimationToTriangle(centeredAt center: CGPoint, radius: Double, duration: CFTimeInterval = 2) -> CABasicAnimation {
         let animation = CABasicAnimation(keyPath: "path")
 
-        animation.toValue = EquilateralTriangle.pathForTriangle(centeredAt: center, radius: 10).CGPath
-        animation.duration = 2
+        animation.toValue = EquilateralTriangle.pathForTriangle(centeredAt: center, radius: radius).CGPath
+        animation.duration = duration
 
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 
@@ -40,12 +50,8 @@ class ViewController: UIViewController {
         animation.fillMode = kCAFillModeBoth
         animation.removedOnCompletion = false
 
-        triangle.addAnimation(animation, forKey: animation.keyPath)
+        return animation
     }
-}
-
-struct EquilateralTriangle {
-    static let angle = M_PI/3
 
     static func pathForTriangle(centeredAt center: CGPoint, radius: Double = 10) -> UIBezierPath {
         let path = UIBezierPath()
