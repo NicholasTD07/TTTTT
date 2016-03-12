@@ -28,8 +28,20 @@ class ViewController: UIViewController {
         view.layer.addSublayer(triangle)
 
         let animation = EquilateralTriangle.pathAnimationToTriangle(centeredAt: center, radius: 10, duration: 2)
+        animation.delegate = self
+        animation.setValue(triangle, forKey: kAnimationLayerKey)
 
         triangle.addAnimation(animation, forKey: nil)
+    }
+}
+
+let kAnimationLayerKey = "animationLayer"
+
+extension ViewController {
+    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+        guard let layer = anim.valueForKey(kAnimationLayerKey) as? CAShapeLayer else { return }
+
+        layer.removeFromSuperlayer()
     }
 }
 
