@@ -29,11 +29,11 @@ class ViewController: UIViewController {
     func addTriangleAndAnimate() {
         let center = CGPoint(x: view.frame.midX, y: view.frame.midY)
 
-        let triangle = EquilateralTriangle.layerForTriangle(centeredAt: center, radius: 100, color: UIColor.redColor())
+        let triangle = EquilateralTriangle.layerForTriangle(centeredAt: center, radius: 500, color: UIColor.redColor())
 
         view.layer.addSublayer(triangle)
 
-        let animation = EquilateralTriangle.pathAnimationToTriangle(centeredAt: center, radius: 10, duration: 2)
+        let animation = EquilateralTriangle.pathAnimationToTriangle(centeredAt: center, radius: 100, duration: 2)
         animation.delegate = self
         animation.setValue(triangle, forKey: kAnimationLayerKey)
 
@@ -60,7 +60,7 @@ struct EquilateralTriangle {
         animation.toValue = EquilateralTriangle.pathForTriangle(centeredAt: center, radius: radius).CGPath
         animation.duration = duration
 
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
 
         /**
         Need the following two lines to make the shape stay in the state of the new path.
