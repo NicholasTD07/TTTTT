@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .blackColor()
+
         setupGestureRecognizer()
 
         addTriangleAndAnimate()
@@ -38,6 +40,12 @@ class ViewController: UIViewController {
         animation.setValue(triangle, forKey: kAnimationLayerKey)
 
         triangle.addAnimation(animation, forKey: nil)
+
+        let colorAnimation = CABasicAnimation(keyPath: "strokeColor")
+        colorAnimation.toValue = UIColor.blackColor().CGColor
+        colorAnimation.duration = 3
+
+        triangle.addAnimation(colorAnimation, forKey: nil)
     }
 }
 
