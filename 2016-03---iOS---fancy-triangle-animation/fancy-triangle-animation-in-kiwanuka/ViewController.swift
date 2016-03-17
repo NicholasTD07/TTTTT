@@ -46,6 +46,26 @@ class ViewController: UIViewController {
         colorAnimation.duration = 3
 
         triangle.addAnimation(colorAnimation, forKey: nil)
+
+
+//
+//        let degree = 45 as Double
+//        let radians = CGFloat(M_PI * 180 / degree)
+//        var transform = CATransform3DIdentity
+//        transform = CATransform3DTranslate(transform, 0, 0, 0)
+//        transform = CATransform3DRotate(transform, radians, 0, 0, 1)
+//        transform = CATransform3DTranslate(transform, 0, 0, 0)
+//
+//        UIView.animateWithDuration(2) { () -> Void in
+//            triangle.transform = transform
+//        }
+//
+//
+//        let rotationAnimation = CABasicAnimation(keyPath: "transform")
+//        rotationAnimation.toValue = NSValue(CATransform3D: rotation) //radians
+//        rotationAnimation.duration = 2
+//
+//        triangle.addAnimation(rotationAnimation, forKey: nil)
     }
 }
 
