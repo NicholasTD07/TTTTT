@@ -7,7 +7,7 @@ project.
 ## Features
 
 * [x] Draw a triangle
-* [ ] Move a triangle
-* [ ] Animate the moving effect
-* [ ] Transform a triangle (from big to small)
-* [ ] Animate the transforming
+* [x] Move a triangle
+* [x] Animate the moving effect
+* [x] Transform a triangle (from big to small)
+* [x] Animate the transforming
