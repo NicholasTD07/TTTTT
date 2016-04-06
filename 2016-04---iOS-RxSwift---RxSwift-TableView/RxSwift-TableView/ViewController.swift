@@ -8,10 +8,30 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 class ViewController: UIViewController {
 
+    @IBOutlet weak var tableView: UITableView!
+    let disposeBag = DisposeBag()
+}
+
+extension ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let items = Observable.just([
+            "First Item",
+            "Second Item",
+            "Third Item"
+            ])
+
+        items
+            .bindTo(tableView.rx_itemsWithCellIdentifier("Cell", cellType: UITableViewCell.self)) { (row, element, cell) in
+                cell.textLabel?.text = "\(element) @ row \(row)"
+            }
+            .addDisposableTo(disposeBag)
     }
 }
 
