@@ -59,4 +59,4 @@ if __name__ == '__main__':
     # test()
 
     with open("./processed.json", 'w') as f:
-        json.dump(parse_lines(raw_lines), f)
+        json.dump(parse_lines(raw_lines), f, indent=4)
