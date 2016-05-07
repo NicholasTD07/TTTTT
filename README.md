@@ -7,7 +7,7 @@ For converting colors in [this PDF](http://www.sherwin-williams.com/wcm/idc/grou
 * Python
 * Regular Expression `imoprt re`
   * Verbose mode `re.X`
-  * Named groups
+  * Named groups `(?P<name>pattern)`
 * JSON `import json`
 
 ## Example Data & Key Parts
