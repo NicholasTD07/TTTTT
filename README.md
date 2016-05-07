@@ -1,6 +1,6 @@
 # TTTTT
 
-That's right, five Ts.
+**That's right, five Ts.**
 
 <br>
 
@@ -15,6 +15,8 @@ My last name starts with `T` and it's the most common name I use for
 something/anything I don't know how to name properly, yet.
 
 > SHOW ME THE CODE
+
+Be careful of what you wish for. 😈
 
 ```python
 # t.py
@@ -38,6 +40,14 @@ struct TTT: T2 {
     func t2() { }
 }
 
-TTT().t2() # ✅
-(TTT() as T1).t2() # ❌ compiler error
+TTT().t2()              # ✅ compiles nicely
+(TTT() as T1).t2()      # ❌ compiler error
+```
+
+```ruby
+class T
+  def t
+    "t"
+  end
+end
 ```
