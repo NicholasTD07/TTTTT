@@ -1,0 +1,40 @@
+#!/bin/bash
+
+function main {
+    if [ -z "$1" -o -z "$2" ];then
+        usage
+        return
+    fi
+
+    prefix=$1
+    start_commit=$2
+    if [ -z "$3" ];then
+        end_commit="HEAD"
+    else
+        end_commit=$3
+    fi
+
+    apply_prefix $prefix $start_commit $end_commit
+}
+
+function apply_prefix {
+    git filter-branch --msg-filter "echo \"$1\" && cat" "$2~1..$3"
+}
+
+function test {
+    echo "Prefix --- start_commit --- end_commit"
+    echo $1 $2 $3
+}
+
+function usage {
+    echo "Usage: $0 prefix start_commit [end_commit]"
+    echo
+    echo "This script adds prefix to commits specified in the command."
+    echo "When end_commit is not specified, HEAD is used as the end_commit."
+}
+
+function _ {
+    git filter-branch --msg-filter 'echo "[django-rest-take-2]" && cat' "327530d..HEAD"
+}
+
+main $*
