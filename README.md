@@ -22,12 +22,12 @@ This is the repo where
 
 
 ## Interesting Parts
-* [bin/add-prefix-to-commits](blob/master/bin/add-prefix-to-commits) A Bash
+* [bin/add-prefix-to-commits](/bin/add-prefix-to-commits) A Bash
   script which **REWRITES** Git's commit message history w/ `git filter-branch`
   😱😱😱 (**SUPER DARK MAGIC**)
-* [bin/push-subtrees](/blob/master/bin/push-subtrees) A Ruby script which pushes all
+* [bin/push-subtrees](/bin/push-subtrees) A Ruby script which pushes all
   sub folders to GitHub as branches w/ `git subtree`
-* [branch/django-rest-take-2](/tree/2016-05---Py-Django-Rest---django-rest-take-2)
+* [branch/django-rest-take-2](../..//tree/2016-05---Py-Django-Rest---django-rest-take-2)
   Having fun with Django and Django REST framework (check out commits with
   Emojis 😆 🙌 ❗️❗️❗️ )
 
