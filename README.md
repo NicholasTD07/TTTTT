@@ -7,6 +7,7 @@
 
 - [Summary](#summary)
 - [Interesting Parts](#interesting-parts)
+- [About Me](#about-me)
 - [WHY T?](#why-t)
 
 <!-- /MarkdownTOC -->
@@ -30,9 +31,20 @@ This is the repo where
   Having fun with Django and Django REST framework (check out commits with
   Emojis 😆 🙌 ❗️❗️❗️ )
 
+## About Me
+
+An iOS developer seriously passinate about programming in general, mainly coding in the following languages:
+
+* Swift
+* Python
+* Ruby
+* Tiny little bit of Bash
+
+You can ~~worship 🙌 me~~ ping me on [Twitter](https://twitter.com/NicholasTD07). 😆 `(JK abt 🙌)`
+
 ## WHY T?
 
-My last name starts with `T` and it's the most common name I use for
+My last name starts with `T` and it's the most common character I use for naming
 something/anything I don't know how to name properly, yet.
 
 > SHOW ME THE CODE
@@ -67,6 +79,7 @@ TTT().t2()              # ✅ compiles nicely
 ```
 
 ```ruby
+# t.rb
 class T
   def t
     "t"
