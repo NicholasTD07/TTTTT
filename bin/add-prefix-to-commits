@@ -29,7 +29,9 @@ function test {
 function usage {
     echo "Usage: $0 prefix start_commit [end_commit]"
     echo
-    echo "This script adds prefix to commits specified in the command."
+    echo "This script adds prefix to commits specified in the command,"
+    echo "including start_commit and end_commit."
+    echo 
     echo "When end_commit is not specified, HEAD is used as the end_commit."
 }
 
