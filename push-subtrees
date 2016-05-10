@@ -1,0 +1,31 @@
+#!/usr/bin/ruby
+
+def main
+  all_prefixes = Dir["*/"]
+  all_prefixes.delete "bin/"
+
+  prefixes_and_branch_names = all_prefixes.map do |prefix|
+    branch_name = /.*---(.*)\//.match(prefix)[1]
+    [prefix, branch_name]
+  end
+
+  prefixes_and_branch_names.each do |prefix, branch_name|
+    push_subtree(prefix, branch_name)
+  end
+end
+
+def push_subtree(prefix, branch_name)
+  #
+  # __test__ prefix, branch_name
+
+  puts `git subtree push --prefix #{prefix} origin #{branch_name}`
+  # git subtree push --prefix 2016-05---Py-Django-Rest---django-rest-take-2 origin django-rest-take-2
+end
+
+def __test__(prefix, branch_name)
+  puts prefix
+  puts branch_name
+  puts
+end
+
+main
