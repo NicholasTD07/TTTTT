@@ -7,7 +7,7 @@
 
 - [Summary](#summary)
 - [Interesting Parts](#interesting-parts)
-- [WHAT?](#what)
+- [WHY T?](#why-t)
 
 <!-- /MarkdownTOC -->
 
@@ -30,7 +30,7 @@ This is the repo where
   Having fun with Django and Django REST framework (check out commits with
   Emojis 😆 🙌 ❗️❗️❗️ )
 
-## WHAT?
+## WHY T?
 
 My last name starts with `T` and it's the most common name I use for
 something/anything I don't know how to name properly, yet.
@@ -72,4 +72,10 @@ class T
     "t"
   end
 end
+```
+
+<br>
+**TBC**
+```ruby
+etc.
 ```
