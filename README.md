@@ -1,13 +1,34 @@
-# TTTTT
+# 🙌 TTTTT 🙌
 
 **That's right, five Ts.**
 
-<br>
+
+<!-- MarkdownTOC -->
+
+- [Summary](#summary)
+- [Interesting Parts](#interesting-parts)
+- [WHAT?](#what)
+
+<!-- /MarkdownTOC -->
+
+## Summary
 
 This is the repo where 
-* I collect fun projects/ideas/playgrounds or
-* I experiment with stuff or
-* Projects so small which do not worth another repo
+* I collect fun projects/ideas/playgrounds 😆, or
+* I experiment with stuff  🤔😮😱, or
+* Projects so small which do not worth another repo, or
+* DO HORRIBLE THINGS 😱😱😱, like rewriting ~~Git's~~ history
+
+
+## Interesting Parts
+* [bin/add-prefix-to-commits](blob/master/bin/add-prefix-to-commits) A Bash
+  script which **REWRITES** Git's commit message history w/ `git filter-branch`
+  😱😱😱 (**SUPER DARK MAGIC**)
+* [bin/push-subtrees](/blob/master/bin/push-subtrees) A Ruby script which pushes all
+  sub folders to GitHub as branches w/ `git subtree`
+* [branch/django-rest-take-2](/tree/2016-05---Py-Django-Rest---django-rest-take-2)
+  Having fun with Django and Django REST framework (check out commits with
+  Emojis 😆 🙌 ❗️❗️❗️ )
 
 ## WHAT?
 
@@ -40,6 +61,7 @@ struct TTT: T2 {
     func t2() { }
 }
 
+// Swift 2.2
 TTT().t2()              # ✅ compiles nicely
 (TTT() as T1).t2()      # ❌ compiler error
 ```
