@@ -18,7 +18,7 @@ function main {
 }
 
 function apply_prefix {
-    git filter-branch --msg-filter "echo \"$1\" && cat" "$2^..$3"
+    git filter-branch --msg-filter "printf \"$1\" && cat" "$2^..$3"
 }
 
 function test {
@@ -36,7 +36,7 @@ function usage {
 }
 
 function _ {
-    git filter-branch --msg-filter 'echo "[django-rest-take-2]" && cat' "327530d..HEAD"
+    git filter-branch --msg-filter 'printf "[django-rest-take-2]" && cat' "327530d..HEAD"
 }
 
 main $*
