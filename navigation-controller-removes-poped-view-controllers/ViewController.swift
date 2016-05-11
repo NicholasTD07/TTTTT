@@ -9,12 +9,16 @@
 import UIKit
 
 class ViewController: UIViewController {
-    let _navigationController: UINavigationController = {
+    lazy var viewController: UIViewController = {
         let controller = UIViewController()
 
         controller.view.backgroundColor = .blackColor()
 
-        return UINavigationController(rootViewController: controller)
+        return controller
+    }()
+
+    lazy var _navigationController: UINavigationController = {
+        return UINavigationController(rootViewController: self.viewController)
     }()
 
     @IBAction func pushSomeViewController() {
