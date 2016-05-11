@@ -25,6 +25,7 @@ This is the repo where
 * [bin/add-prefix-to-commits](/bin/add-prefix-to-commits) A Bash
   script which **REWRITES** Git's commit message history w/ `git filter-branch`
   😱😱😱 (**SUPER DARK MAGIC**)
+* [notes/git-filter-branch-over-a-range-of-commits.md](/notes/git-filter-branch-over-a-range-of-commits.md) Rewrite Git History Over a Range of Commits 😱😱😱😱😱😱
 * [bin/push-subtrees](/bin/push-subtrees) A Ruby script which pushes all
   sub folders to GitHub as branches w/ `git subtree`
 * [branch/django-rest-take-2](../..//tree/2016-05---Py-Django-Rest---django-rest-take-2)
