@@ -9,17 +9,17 @@
 import UIKit
 
 class ViewController: UIViewController {
+    let _navigationController: UINavigationController = {
+        let controller = UIViewController()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        controller.view.backgroundColor = .blackColor()
+
+        return UINavigationController(rootViewController: controller)
+    }()
+
+    @IBAction func pushSomeViewController() {
+        print("Push~")
+        self.navigationController!.pushViewController(_navigationController.viewControllers.first!, animated: true)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
 }
 
