@@ -8,11 +8,7 @@ function main {
 
     prefix=$1
     start_commit=$2
-    if [ -z "$3" ];then
-        end_commit="HEAD"
-    else
-        end_commit=$3
-    fi
+    end_commit="HEAD"
 
     apply_prefix $prefix $start_commit $end_commit
 }
@@ -27,12 +23,12 @@ function test {
 }
 
 function usage {
-    echo "Usage: $0 prefix start_commit [end_commit]"
+    echo "Usage: $0 prefix start_commit"
     echo
     echo "This script adds prefix to commits specified in the command,"
     echo "including start_commit and end_commit."
     echo 
-    echo "When end_commit is not specified, HEAD is used as the end_commit."
+    echo "HEAD is the end_commit."
 }
 
 function _ {
