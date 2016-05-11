@@ -2,7 +2,7 @@
 
 def main(args)
   all_dirs = Dir["*/"]
-  all_dirs.delete "bin/"
+  # all_dirs.delete "bin/"
 
   # push_subtrees_with_simple_branch_names all_dirs
   if $pushing
