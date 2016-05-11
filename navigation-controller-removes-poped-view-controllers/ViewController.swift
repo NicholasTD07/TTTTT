@@ -23,7 +23,7 @@ class ViewController: UIViewController {
 
     @IBAction func pushSomeViewController() {
         print("Push~")
-        self.navigationController!.pushViewController(_navigationController.viewControllers.first!, animated: true)
+        self.navigationController!.pushViewController(_navigationController, animated: true)
     }
 }
 
