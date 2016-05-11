@@ -24,6 +24,8 @@ class ViewController: UIViewController {
     @IBAction func pushSomeViewController() {
         print("Push~")
         self.navigationController!.pushViewController(_navigationController.viewControllers.first!, animated: true)
+
+        print("Pushed... ViewControllers left in _navi...: \(_navigationController.viewControllers.count)")
     }
 }
 
