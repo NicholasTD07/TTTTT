@@ -18,7 +18,7 @@ function main {
 }
 
 function apply_prefix {
-    git filter-branch --msg-filter "printf \"$1\" && cat" "$2^..$3"
+    git filter-branch --msg-filter "printf \"$1 \" && cat" "$2^..$3"
 }
 
 function test {
