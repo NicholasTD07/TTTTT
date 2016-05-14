@@ -1,17 +1,27 @@
 import subprocess
 
-def main():
+def main(limit):
     output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
     print("{}\t{}".format(0, output.strip()))
 
     number = 1
     while True:
         output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', '@{{-{}}}'.format(number)])
-        if not output: # output is empty
+        if (not output or number > limit): # output is empty
             break
 
         print("{}\t{}".format(number, output.strip()))
         number += 1
 
 if __name__ == '__main__':
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Show the history of checkout.')
+    parser.add_argument(
+        '-n', dest='limit',
+        default=10, help='limit the number of branch names to output.'
+    )
+
+    args = parser.parse_args()
+
+    main(args.limit)
