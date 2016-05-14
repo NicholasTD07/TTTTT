@@ -1,6 +1,5 @@
 import subprocess
 
-
 def main():
     output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
     print("{}\t{}".format(0, output.strip()))
@@ -14,4 +13,5 @@ def main():
         print("{}\t{}".format(number, output.strip()))
         number += 1
 
-main()
+if __name__ == '__main__':
+    main()
