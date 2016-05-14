@@ -6,7 +6,14 @@ def main(limit):
 
     number = 1
     while True:
-        output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', '@{{-{}}}'.format(number)])
+        try:
+            output = subprocess.check_output(
+                ['git', 'rev-parse', '--abbrev-ref', '@{{-{}}}'.format(number)],
+                stderr=subprocess.STDOUT
+            )
+        except subprocess.CalledProcessError as e:
+            output = "unknown branch (perhaps deleted)"
+
         if (not output or number > limit): # output is empty
             break
 
