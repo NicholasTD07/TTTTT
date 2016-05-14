@@ -2,8 +2,16 @@ import subprocess
 
 
 def main():
+    output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+    print("{}\t{}".format(0, output.strip()))
+
     number = 1
-    output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', '@{{-{}}}'.format(number)])
-    print("{}\t{}".format(number, output))
+    while True:
+        output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', '@{{-{}}}'.format(number)])
+        if not output: # output is empty
+            break
+
+        print("{}\t{}".format(number, output.strip()))
+        number += 1
 
 main()
