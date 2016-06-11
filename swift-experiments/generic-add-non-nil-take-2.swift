@@ -18,10 +18,6 @@ protocol SelfAddable {
     func +(lhs: Self, rhs: Self) -> Self
 }
 
-protocol HasElement {
-
-}
-
 let s1: String = "123"
 let s2: String = "456"
 
@@ -30,10 +26,10 @@ print("s1 + s2 is \(s1 + s2)")
 extension String: SelfAddable { }
 
 // FIXME: Check associativity & precedence
-infix operator <|> { associativity left precedence 140 }
+infix operator <+> { associativity left precedence 140 }
 
 @warn_unused_result
-func <|> <T where T: Appendable>(lhs: T, rhs: T.Element?) -> T {
+func <+> <T where T: Appendable>(lhs: T, rhs: T.Element?) -> T {
     if let value = rhs {
         var lhs = lhs
         lhs.append(value)
@@ -44,7 +40,7 @@ func <|> <T where T: Appendable>(lhs: T, rhs: T.Element?) -> T {
 }
 
 @warn_unused_result
-func <|> <T where T: SelfAddable>(lhs: T, rhs: T?) -> T {
+func <+> <T where T: SelfAddable>(lhs: T, rhs: T?) -> T {
     if let value = rhs {
         return lhs + value
     } else {
@@ -63,12 +59,12 @@ func <*> <T where T: SelfAddable>(lhs: T?, rhs:T?) -> T? {
 }
 
 let nilString: String? = nil
-// let combinedStrings = "abc" <|> nil <|> "def" // won't work. compiler doesn't know `nil` is String? or String.Element?
-let combinedStrings = "abc" <|> nilString <|> "def"
+// let combinedStrings = "abc" <+> nil <+> "def" // won't work. compiler doesn't know `nil` is String? or String.Element?
+let combinedStrings = "abc" <+> nilString <+> "def"
 assert(combinedStrings == "abcdef")
 
 @warn_unused_result
-func <|> <T where T: SelfAddable>(lhs: T?, rhs: T) -> T {
+func <+> <T where T: SelfAddable>(lhs: T?, rhs: T) -> T {
     if let value = lhs {
         return value + rhs
     } else {
@@ -76,5 +72,5 @@ func <|> <T where T: SelfAddable>(lhs: T?, rhs: T) -> T {
     }
 }
 
-let combinedStringsStartingWithNil = nilString <*> "\n" <|> "hello"
+let combinedStringsStartingWithNil = nilString <*> "\n" <+> "hello"
 assert(combinedStringsStartingWithNil == "hello")
