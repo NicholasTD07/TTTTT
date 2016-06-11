@@ -15,7 +15,7 @@ extension String: Appendable {
     typealias Element = UnicodeScalar
 }
 protocol SelfAddable {
-    func +(rhs: Self, lhs: Self) -> Self
+    func +(lhs: Self, rhs: Self) -> Self
 }
 
 protocol HasElement {
@@ -33,29 +33,33 @@ extension String: SelfAddable { }
 infix operator <|> { associativity left precedence 140 }
 
 @warn_unused_result
-func <|> <T where T: Appendable>(rhs: T, lhs: T.Element?) -> T {
-    if let value = lhs {
-        var rhs = rhs
-        rhs.append(value)
-        return rhs
+func <|> <T where T: Appendable>(lhs: T, rhs: T.Element?) -> T {
+    if let value = rhs {
+        var lhs = lhs
+        lhs.append(value)
+        return lhs
     } else {
-        return rhs
+        return lhs
     }
 }
 
 @warn_unused_result
-func <|> <T where T: SelfAddable>(rhs: T, lhs: T?) -> T {
-    if let value = lhs {
-        return rhs + value
+func <|> <T where T: SelfAddable>(lhs: T, rhs: T?) -> T {
+    if let value = rhs {
+        return lhs + value
     } else {
-        return rhs
+        return lhs
     }
 }
 
+infix operator <*> { associativity left precedence 140 }
 @warn_unused_result
-func <*> <T where T SelfAddable>(rhs: T?, lhs:T?) -> T {
-    switch (rhs, lhs):
-        case .None(rhs)
+func <*> <T where T: SelfAddable>(lhs: T?, rhs:T?) -> T? {
+    switch (lhs, rhs) {
+    case (.None, _): return nil
+    case (.Some(let lhs), .None): return lhs
+    case (.Some(let lhs), .Some(let rhs)): return lhs + rhs
+    }
 }
 
 let nilString: String? = nil
@@ -63,3 +67,14 @@ let nilString: String? = nil
 let combinedStrings = "abc" <|> nilString <|> "def"
 assert(combinedStrings == "abcdef")
 
+@warn_unused_result
+func <|> <T where T: SelfAddable>(lhs: T?, rhs: T) -> T {
+    if let value = lhs {
+        return value + rhs
+    } else {
+        return rhs
+    }
+}
+
+let combinedStringsStartingWithNil = nilString <*> "\n" <|> "hello"
+assert(combinedStringsStartingWithNil == "hello")
