@@ -2,16 +2,26 @@
 
 def main(args)
   all_dirs = Dir["*/"]
-  # all_dirs.delete "bin/"
+
+  dirs = args.select { |dir| dir[/^\w+/] }
+
+  if dirs.length == 0
+    dirs = all_dirs
+  end
+
+  puts "Pushing #{dirs.length} subtrees"
+
+  simple = args.include? '-s'
+  pushing = args.include? '-p'
 
   # push_subtrees_with_simple_branch_names all_dirs
-  if $pushing
-    if $simple
+  if pushing
+    if simple
       puts "Pushing subtrees with simplified dir's name"
-      push_subtrees_with_simple_branch_names(all_dirs)
+      push_subtrees_with_simple_branch_names(dirs)
     else
       puts "Pushing subtrees with dir's name"
-      push_subtrees_with_dir_names(all_dirs)
+      push_subtrees_with_dir_names(dirs)
     end
   else
     return usage
@@ -73,7 +83,5 @@ end
 
 args = ARGV
 $testing = args.include? '-t'
-$simple = args.include? '-s'
-$pushing = args.include? '-p'
 
 main args
