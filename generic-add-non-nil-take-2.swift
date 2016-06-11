@@ -74,3 +74,33 @@ func <+> <T where T: SelfAddable>(lhs: T?, rhs: T) -> T {
 
 let combinedStringsStartingWithNil = nilString <*> "\n" <+> "hello"
 assert(combinedStringsStartingWithNil == "hello")
+
+// Other SelfAddable types
+
+extension Double: SelfAddable { }
+
+let nilDouble: Double? = nil
+let combinedDouble = 1.0 <+> nil <+> 2.0
+assert(combinedDouble == 3.0)
+
+let nonNilDoubleOne: Double = 1.0
+// let nonNilDoubleTwo: Double? = 2.0
+let nonNilDoubleTwo: Double = 2.0 // this won't work without the following func
+
+@warn_unused_result
+func <+> <T where T: SelfAddable>(lhs: T, rhs: T) -> T {
+    return lhs + rhs
+}
+
+assert(nilDouble <+> 1.0 <+> 2.0 == 3.0) // this won't work without the func above
+// Because 1.0 or 2.0 could be Optional<Double> in Swift's compiler's mind even if you put it into a let of type Double
+// It can work without the func above but you have to define nonNilDoubleTwo as Double?
+
+let combinedDoubleStartingNilPartOne = (nilDouble <+> nonNilDoubleOne)
+print(combinedDoubleStartingNilPartOne.dynamicType) // Double
+let combinedDoubleStartingNil =  combinedDoubleStartingNilPartOne <+> nonNilDoubleTwo
+assert(combinedDoubleStartingNil == 3.0)
+
+// Two frameworks
+// 1. ProtocolExtensions.swift
+// 2. AddNonNilOnly
