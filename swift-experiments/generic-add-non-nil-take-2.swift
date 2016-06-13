@@ -74,7 +74,6 @@ func <+> <T where T: SelfAddable>(lhs: T?, rhs: T) -> T {
 
 let combinedStringsStartingWithNil = nilString <*> "\n" <+> "hello"
 assert(combinedStringsStartingWithNil == "hello")
-
 // Other SelfAddable types
 
 extension Double: SelfAddable { }
@@ -100,6 +99,10 @@ let combinedDoubleStartingNilPartOne = (nilDouble <+> nonNilDoubleOne)
 print(combinedDoubleStartingNilPartOne.dynamicType) // Double
 let combinedDoubleStartingNil =  combinedDoubleStartingNilPartOne <+> nonNilDoubleTwo
 assert(combinedDoubleStartingNil == 3.0)
+
+
+let combinedStringsStartingWithNilTwo = nilString <+> "\n" <+> "hello"
+assert(combinedStringsStartingWithNilTwo == "\nhello")
 
 // Two frameworks
 // 1. ProtocolExtensions.swift
