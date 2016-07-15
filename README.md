@@ -31,6 +31,9 @@ This is the repo where
 * [branch/django-rest-take-2](../..//tree/2016-05---Py-Django-Rest---django-rest-take-2)
   Having fun with Django and Django REST framework (check out commits with
   Emojis 😆 🙌 ❗️❗️❗️ )
+* [swift-experiments](./swift-experiments)
+  I need to write a weekly blog about what I learned with these experiments.
+  I learnt so much and I WANT TO SHARE THEM!
 
 ## About Me
 
