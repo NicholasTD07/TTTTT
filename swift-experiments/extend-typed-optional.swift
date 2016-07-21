@@ -1,5 +1,5 @@
 /*
- Conclusion: When extending generics, you have to use a prototype as constraints
+ Conclusion: When extending generics, you have to use a protocol as constraints
 */
 
 // v1 naive
