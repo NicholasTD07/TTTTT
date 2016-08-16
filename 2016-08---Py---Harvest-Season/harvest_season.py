@@ -88,7 +88,7 @@ class HarvestSeasonAPI(object):
             'headers': {'Accept': 'application/json'}
         }
 
-    def add_entry(hours, project, task, notes=None, date=None):
+    def add_entry(self, hours, project, task, notes=None, date=None):
         assert self.__auth is not None
         assert type(hours) == float
         assert type(project) == Project
@@ -109,11 +109,17 @@ class HarvestSeasonAPI(object):
             'spent_at': spent_at,
         }
 
-        r = requests.get(
+        r = requests.post(
             'https://{}.harvestapp.com/daily/add'.format(self.__company),
             json=payload,
             **self.__requests_arguments
         )
+
+        if r.status_code == 201:
+            print("Added entry!")
+        else:
+            print("Soemthing went wrong. Blame the creator/dev.")
+            debug(r.text)
 
     # Returns [Entry]
     def get_daily(self, year=None, month=None, day=None):
@@ -259,3 +265,10 @@ if __name__ == '__main__':
 
     print(selector.selectedProject.name)
     print(selector.selectedTask.name)
+
+    api.add_entry(
+        7.6,
+        selector.selectedProject,
+        selector.selectedTask,
+        notes="testing",
+    )
