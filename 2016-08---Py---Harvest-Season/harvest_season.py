@@ -18,7 +18,7 @@ def error(message):
 def debug(message):
     print(message)
 
-class JSONDeserilizable:
+class JSONDeserilizable(object):
     __desired_keys__ = None
     def __init__(self, json):
         assert type(json) == dict
@@ -52,7 +52,7 @@ class Entry(JSONDeserilizable):
         'task_id',
     ]
 
-class HarvestSeason:
+class HarvestSeasonAPI(object):
     def __init__(self):
         self.__username = None
         self.__password = None
@@ -74,6 +74,11 @@ class HarvestSeason:
 
         return projects
 
+    @property
+    def hasInvalidLogin(self):
+        return ((self.__username is None or self.__password is None or self.__company is None) or
+               (len(self.__username) <= 0 or len(self.__password) <= 0 or len(self.__company) <= 0))
+
     # API
 
     @property
@@ -83,8 +88,36 @@ class HarvestSeason:
             'headers': {'Accept': 'application/json'}
         }
 
+    def add_entry(hours, project, task, notes=None, date=None):
+        assert self.__auth is not None
+        assert type(hours) == float
+        assert type(project) == Project
+        assert type(task) == Task
+        assert (notes is None) or (type(notes) == str)
+        assert (date is None) or (type(date) == datetime.datetime)
+
+        notes = notes if notes is not None else ""
+        date = date if date is not None else datetime.datetime.today()
+
+        spent_at = date.strftime('%Y-%m-%d')
+
+        payload = {
+            'notes': notes,
+            'hours': hours,
+            'project_id': project.id,
+            'task_id': task.id,
+            'spent_at': spent_at,
+        }
+
+        r = requests.get(
+            'https://{}.harvestapp.com/daily/add'.format(self.__company),
+            json=payload,
+            **self.__requests_arguments
+        )
+
     # Returns [Entry]
     def get_daily(self, year=None, month=None, day=None):
+        assert self.__auth is not None
         assert all([ x is not None for x in [year, month, day] ])
         timetuple = datetime.datetime(year, month, day).timetuple()
         year = timetuple.tm_year
@@ -152,26 +185,77 @@ class HarvestSeason:
 
     def login(self):
         class InvalidLogin(Exception): pass
-        if self.invalidLogin():
+        if self.hasInvalidLogin:
             warn("Please use promptForLogin to set username and password first.")
             raise InvalidLogin
 
         self.__auth = requests.auth.HTTPBasicAuth(self.__username, self.__password)
 
-    def invalidLogin(self):
-        return ((self.__username is None or self.__password is None or self.__company is None) or
-               (len(self.__username) <= 0 or len(self.__password) <= 0 or len(self.__company) <= 0))
+class ProjectFormatter(object):
+    def __init__(self, projects):
+        assert all([ type(project) == Project for project in projects ])
+        self.__projects = projects
+
+    @property
+    def projects(self):
+        return self.__projects
+
+    def listProjects(self):
+        projects_string = '\n'.join(
+            [ "[{}]\t{}".format(index, project.name)
+             for index, project in enumerate(self.__projects)  ]
+        )
+        print(projects_string)
+
+    def listTasksInProject(self, projectIndex):
+        assert projectIndex < len(self.__projects)
+
+        tasks_string = '\n'.join(
+            [ "[{}]\t{}".format(index, task.name)
+             for index, task in enumerate(self.__projects[projectIndex].tasks)  ]
+        )
+        print(tasks_string)
+
+class Selector(object):
+    def __init__(self, projectsContainer):
+        assert type(projectsContainer.projects) == list
+        assert all([ type(project) == Project for project in projectsContainer.projects ])
+        self.__projects = projectsContainer.projects
+        self.selectedProject = None
+        self.selectedTask = None
+
+    def __get_project(self, projectIndex):
+        assert type(projectIndex) == int and projectIndex < len(self.__projects)
+
+        return self.__projects[projectIndex]
+
+    def selectTask(self, projectIndex, taskIndex):
+        project = self.__get_project(projectIndex)
+        assert type(taskIndex) == int and taskIndex < len(project.tasks)
+
+        self.selectedProject = project
+        self.selectedTask = project.tasks[taskIndex]
 
 if __name__ == '__main__':
     def print(message):
         import pprint
         pprint.pprint(message, indent=4)
 
-    harvestSeason = HarvestSeason()
+    api = HarvestSeasonAPI()
 
-    harvestSeason.promptForLogin()
-    harvestSeason.login()
-    harvestSeason.check_login()
-    harvestSeason.update_projects()
-    # pprint.pprint(harvestSeason.projects, indent=4)
-    print(harvestSeason.get_daily(2016, 8, 10))
+    api.promptForLogin()
+    api.login()
+    api.check_login()
+    api.update_projects()
+    # print(api.projects)
+    # print(api.get_daily(2016, 8, 10))
+
+    projectFormatter = ProjectFormatter(api.projects)
+    projectFormatter.listProjects()
+    projectFormatter.listTasksInProject(0)
+
+    selector = Selector(projectFormatter)
+    selector.selectTask(0, 4)
+
+    print(selector.selectedProject.name)
+    print(selector.selectedTask.name)
