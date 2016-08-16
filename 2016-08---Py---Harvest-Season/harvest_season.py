@@ -1,7 +1,13 @@
+from __future__ import print_function
+
 import json
 import pprint
 import getpass
+import datetime
+
+
 import requests
+
 
 def warn(message):
     print(message)
@@ -31,6 +37,20 @@ class Project(JSONDeserilizable):
 
 class Task(JSONDeserilizable):
     __desired_keys__ = ['name', 'id', 'billable']
+
+class Entry(JSONDeserilizable):
+    __desired_keys__ = [
+        'id',
+        'hours',
+        'notes',
+        'client',
+        'spent_at', # u'spent_at': u'2016-08-10',
+
+        'project',
+        'project_id',
+        'task',
+        'task_id',
+    ]
 
 class HarvestSeason:
     def __init__(self):
@@ -63,6 +83,40 @@ class HarvestSeason:
             'headers': {'Accept': 'application/json'}
         }
 
+    # Returns [Entry]
+    def get_daily(self, year=None, month=None, day=None):
+        assert all([ x is not None for x in [year, month, day] ])
+        timetuple = datetime.datetime(year, month, day).timetuple()
+        year = timetuple.tm_year
+        day = timetuple.tm_yday
+
+        r = requests.get(
+            'https://{}.harvestapp.com/daily/{}/{}'.format(
+                self.__company, day, year
+            ),
+            **self.__requests_arguments
+        )
+
+        if 'day_entries' in r.text:
+            return [ Entry(entry_json) for entry_json in r.json()['day_entries'] ]
+        else:
+            debug("Did not get 'day_entries from response. Maybe there's no entry on that day?")
+            debug(r.text)
+            return []
+
+
+
+    def update_projects(self):
+        assert self.__auth is not None
+
+        r = requests.get(
+            'https://{}.harvestapp.com/daily'.format(self.__company),
+            **self.__requests_arguments
+        )
+
+        if 'projects' in r.text and 'tasks' in r.text:
+            self.__projects = r.json()['projects']
+
     def check_login(self):
         assert self.__auth is not None
 
@@ -77,17 +131,6 @@ class HarvestSeason:
             print("Welcome {} {}!".format(user['first_name'], user['last_name']))
         else:
             print("Something went wrong. Blame the creator/dev.")
-
-    def update_projects(self):
-        assert self.__auth is not None
-
-        r = requests.get(
-            'https://{}.harvestapp.com/daily'.format(self.__company),
-            **self.__requests_arguments
-        )
-
-        if 'projects' in r.text and 'tasks' in r.text:
-            self.__projects = r.json()['projects']
 
     # Login
 
@@ -108,8 +151,10 @@ class HarvestSeason:
             self.__company = company
 
     def login(self):
+        class InvalidLogin(Exception): pass
         if self.invalidLogin():
             warn("Please use promptForLogin to set username and password first.")
+            raise InvalidLogin
 
         self.__auth = requests.auth.HTTPBasicAuth(self.__username, self.__password)
 
@@ -118,11 +163,15 @@ class HarvestSeason:
                (len(self.__username) <= 0 or len(self.__password) <= 0 or len(self.__company) <= 0))
 
 if __name__ == '__main__':
-    import pprint
+    def print(message):
+        import pprint
+        pprint.pprint(message, indent=4)
+
     harvestSeason = HarvestSeason()
 
     harvestSeason.promptForLogin()
     harvestSeason.login()
     harvestSeason.check_login()
     harvestSeason.update_projects()
-    pprint.pprint(harvestSeason.projects, indent=4)
+    # pprint.pprint(harvestSeason.projects, indent=4)
+    print(harvestSeason.get_daily(2016, 8, 10))
