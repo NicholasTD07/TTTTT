@@ -116,7 +116,7 @@ class HarvestSeasonAPI(object):
         )
 
         if r.status_code == 201:
-            print("Added entry on {} for {} hours.".format(spent_at, hours))
+            print("Added entry on {} for {} hours.".format(date.strftime("%a, %Y-%m-%d"), hours))
         else:
             print("Soemthing went wrong. Blame the creator/dev.")
             debug(r.text)
@@ -126,16 +126,17 @@ class HarvestSeasonAPI(object):
         assert type(task) == Task
         endDate = endDate if endDate is not None else datetime.datetime.today()
         for date in datesWithin(startDate, endDate):
-            isWeekday = date.timetuple().tm_wday in range(0, 6)
+            isWeekday = date.weekday() in range(0, 5) # Mon is 0, 0 1 2 3 4 is Mon to Fri
             if not isWeekday:
-                return
+                print("")
+                continue
 
             hours_on_that_date = self.get_hours_on_a_date(date)
             missing_hours = hours - hours_on_that_date
             if missing_hours > 0:
                 self.add_entry(missing_hours, project, task, date=date)
             elif missing_hours < 0:
-                print("On date: {}, there is {} hours logged".format(date, hours))
+                print("On date: {}, there is {} hours logged".format(date.strftime("%a, %Y-%m-%d"), hours))
 
 
     def get_hours_on_a_date(self, date=None):
@@ -274,9 +275,9 @@ def datesWithin(startDate, endDate=None):
     assert endDate > startDate
     date = startDate
     while True:
-        yield date
-        if date == endDate:
+        if date >= endDate:
             break
+        yield date
         date = date + datetime.timedelta(days=1)
 
 if __name__ == '__main__':
