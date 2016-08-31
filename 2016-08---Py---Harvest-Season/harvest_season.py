@@ -116,16 +116,43 @@ class HarvestSeasonAPI(object):
         )
 
         if r.status_code == 201:
-            print("Added entry!")
+            print("Added entry on {} for {} hours.".format(spent_at, hours))
         else:
             print("Soemthing went wrong. Blame the creator/dev.")
             debug(r.text)
 
+    def fill(self, project, task, hours, startDate, endDate=None):
+        assert type(project) == Project
+        assert type(task) == Task
+        endDate = endDate if endDate is not None else datetime.datetime.today()
+        for date in datesWithin(startDate, endDate):
+            isWeekday = date.timetuple().tm_wday in range(0, 6)
+            if not isWeekday:
+                return
+
+            hours_on_that_date = self.get_hours_on_a_date(date)
+            missing_hours = hours - hours_on_that_date
+            if missing_hours > 0:
+                self.add_entry(missing_hours, project, task, date=date)
+            elif missing_hours < 0:
+                print("On date: {}, there is {} hours logged".format(date, hours))
+
+
+    def get_hours_on_a_date(self, date=None):
+        entries = self.get_daily_at_date(date)
+        hours = [ entry.hours for entry in entries ]
+        return sum(hours)
+
     # Returns [Entry]
     def get_daily(self, year=None, month=None, day=None):
-        assert self.__auth is not None
         assert all([ x is not None for x in [year, month, day] ])
-        timetuple = datetime.datetime(year, month, day).timetuple()
+        date = datetime.datetime(year, month, day)
+        return self.get_daily_at_date(date)
+
+    def get_daily_at_date(self, date=None):
+        assert self.__auth is not None
+        assert date is not None and type(date) == datetime.datetime
+        timetuple = date.timetuple()
         year = timetuple.tm_year
         day = timetuple.tm_yday
 
@@ -223,10 +250,10 @@ class ProjectFormatter(object):
         print(tasks_string)
 
 class Selector(object):
-    def __init__(self, projectsContainer):
-        assert type(projectsContainer.projects) == list
-        assert all([ type(project) == Project for project in projectsContainer.projects ])
-        self.__projects = projectsContainer.projects
+    def __init__(self, projects):
+        assert type(projects) == list
+        assert all([ type(project) == Project for project in projects ])
+        self.__projects = projects
         self.selectedProject = None
         self.selectedTask = None
 
@@ -241,6 +268,16 @@ class Selector(object):
 
         self.selectedProject = project
         self.selectedTask = project.tasks[taskIndex]
+
+def datesWithin(startDate, endDate=None):
+    endDate = endDate if endDate is not None else datetime.today()
+    assert endDate > startDate
+    date = startDate
+    while True:
+        yield date
+        if date == endDate:
+            break
+        date = date + datetime.timedelta(days=1)
 
 if __name__ == '__main__':
     def print(message):
@@ -260,15 +297,18 @@ if __name__ == '__main__':
     projectFormatter.listProjects()
     projectFormatter.listTasksInProject(0)
 
-    selector = Selector(projectFormatter)
+    selector = Selector(projectFormatter.projects)
     selector.selectTask(0, 4)
 
     print(selector.selectedProject.name)
     print(selector.selectedTask.name)
 
-    api.add_entry(
-        7.6,
-        selector.selectedProject,
-        selector.selectedTask,
-        notes="testing",
-    )
+    # api.add_entry(
+    #     7.6,
+    #     selector.selectedProject,
+    #     selector.selectedTask,
+    # )
+
+    startDate = datetime.datetime(2016, 4, 27)
+    endDate = startDate + datetime.timedelta(days=7)
+    api.fill(selector.selectedProject, selector.selectedTask, 7.6, startDate, endDate)
