@@ -20,6 +20,12 @@ This is the repo where
 * Projects so small which do not worth another repo, or
 * DO HORRIBLE THINGS 😱😱😱, like rewriting ~~Git's~~ history
 
+## TODOs
+
+- Swift Bits
+- Python Bits
+  - SwiftInitGen: Auto-generate public init method for Swift structs/classes
+  - SoulPool: Simulate my ideas about the existence of soul with BDD 😈
 
 ## Interesting Parts
 * [bin/add-prefix-to-commits](/bin/add-prefix-to-commits) A Bash
