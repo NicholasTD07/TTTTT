@@ -30,16 +30,18 @@ class Store<State> {
 }
 
 
-struct Increase: ActionType { }
-struct Decrease: ActionType { }
+enum CounterActions: ActionType {
+    case Increase
+    case Decrease
+}
 
 let counterStore = Store<Int>.init { (state: Int?, action: ActionType) -> Int in
     let state = state ?? 0
 
     switch action {
-    case _ as Increase:
+    case let counterAction as CounterActions where counterAction == .Increase:
         return state + 1
-    case _ as Decrease:
+    case let counterAction as CounterActions where counterAction == .Decrease:
         return state - 1
     default:
         return state
@@ -54,11 +56,11 @@ counterStore.dispatch(InitialAction())
 assert(counterStore.state == 0)
 
 // dispatch Increase will increase the state
-counterStore.dispatch(Increase())
+counterStore.dispatch(CounterActions.Increase)
 assert(counterStore.state == 1)
 
 // dispatch Decrease will increase the state
-counterStore.dispatch(Decrease())
+counterStore.dispatch(CounterActions.Decrease)
 assert(counterStore.state == 0)
 
 var counter: Int = -1000
@@ -68,5 +70,5 @@ counterStore.subscribe { (store: Store<Int>) in
 assert(counter == counterStore.state)
 
 // when state is updated, subscirbers will get notified of the new state
-counterStore.dispatch(Increase())
+counterStore.dispatch(CounterActions.Increase)
 assert(counter == counterStore.state)
