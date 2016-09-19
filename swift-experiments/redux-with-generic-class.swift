@@ -1,16 +1,22 @@
 protocol ActionType { }
+
 struct InitialAction: ActionType { }
 
 class Store<State> {
-    typealias Action = ActionType
-    typealias Reducer = (state: State?, action: Action) -> State
-    typealias Subscriber = (store: Store) -> ()
-
+    var state: State! // This `!` will be explained
+    typealias Reducer = (state: State?, action: ActionType) -> State
     final let reducer: Reducer
-    final var state: State!
+
+    init(with reducer: Reducer) {
+        self.reducer = reducer
+
+        dispatch(InitialAction())
+    }
+
+    typealias Subscriber = (store: Store) -> ()
     final var subscribers = [Subscriber]()
 
-    final func dispatch(action: Action) {
+    final func dispatch(action: ActionType) {
         self.state = reducer(state: state, action: action)
         subscribers.forEach {
             $0(store: self)
@@ -21,13 +27,8 @@ class Store<State> {
         subscribers.append(subscriber)
         subscriber(store: self)
     }
-
-    init(with reducer: Reducer) {
-        self.reducer = reducer
-
-        dispatch(InitialAction())
-    }
 }
+
 
 struct Increase: ActionType { }
 struct Decrease: ActionType { }
@@ -64,4 +65,8 @@ var counter: Int = -1000
 counterStore.subscribe { (store: Store<Int>) in
     counter = store.state
 }
+assert(counter == counterStore.state)
+
+// when state is updated, subscirbers will get notified of the new state
+counterStore.dispatch(Increase())
 assert(counter == counterStore.state)
