@@ -38,13 +38,15 @@ enum CounterActions: ActionType {
 let counterStore = Store<Int>.init { (state: Int?, action: ActionType) -> Int in
     let state = state ?? 0
 
-    switch action {
-    case let counterAction as CounterActions where counterAction == .Increase:
-        return state + 1
-    case let counterAction as CounterActions where counterAction == .Decrease:
-        return state - 1
-    default:
+    guard let counterAction = action as? CounterActions else {
         return state
+    }
+
+    switch counterAction {
+    case .Increase:
+        return state + 1
+    case .Decrease:
+        return state - 1
     }
 }
 
