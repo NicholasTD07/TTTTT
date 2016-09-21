@@ -3,29 +3,29 @@ protocol ActionType { }
 struct InitialAction: ActionType { }
 
 class Store<State> {
-    var state: State! // This `!` will be explained
-    typealias Reducer = (state: State?, action: ActionType) -> State
+    var state: State!
+    typealias Reducer = (State?, ActionType) -> State
     final let reducer: Reducer
 
-    init(with reducer: Reducer) {
+    init(with reducer: @escaping Reducer) {
         self.reducer = reducer
 
         dispatch(InitialAction())
     }
 
-    typealias Subscriber = (store: Store) -> ()
+    typealias Subscriber = (Store) -> ()
     final var subscribers = [Subscriber]()
 
-    final func dispatch(action: ActionType) {
-        self.state = reducer(state: state, action: action)
+    final func dispatch(_ action: ActionType) {
+        self.state = reducer(state, action)
         subscribers.forEach {
-            $0(store: self)
+            $0(self)
         }
     }
 
-    final func subscribe(with subscriber: Subscriber) {
+    final func subscribe(with subscriber: @escaping Subscriber) {
         subscribers.append(subscriber)
-        subscriber(store: self)
+        subscriber(self)
     }
 }
 
