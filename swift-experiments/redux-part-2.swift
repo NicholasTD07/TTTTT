@@ -29,6 +29,33 @@ class Store<State> {
     }
 }
 
+/*
+### Why the returned reducer takes Any as ActionType?
+Six scenarios:
+- `action` is of type `SpecificActionType`,
+    - if state is `nil`, the reducer will return `initialState`.
+    - if state is not `nil`, the reducer will reduce its result.
+- `action` is of type `ActionType`,
+    - if state is `nil`, the reducer will return `initialState`.
+    - if state is not `nil`, the reducer will return the current state.
+- `action` is of some other types
+    - if state is `nil`, the reducer will return `initialState`.
+    - if state is not `nil`, the reducer will return the current state.
+
+As you can see, what the reducer returns is the same if `action` is of type `ActionType` or `Any`.
+However, if you want to combine reducers together, all reducers need to have a common type.
+
+Q: What if we use ActionType, will Swift's compiler find a type which suits the purpose?
+    i.e. what's the type of the array: [
+        (State, ActionTypeOne) -> State,
+        (State, ActionTypeTwo) -> State,
+        (State, ActionTypeThree) -> State,
+    ]
+
+### Why do we need to pass in initial state?
+Because we need to do the typecasting and if the typecasting fail we need to return a non-optional state,
+while this (returned) reducer takes optional state. Thus we need the initialState.
+*/
 
 func Reducer<State, SpecificActionType>(
         initialState: State,
