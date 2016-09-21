@@ -30,8 +30,11 @@ class Store<State> {
 }
 
 
-func Reducer<State, SpecificActionType>(initialState: State, reducer: @escaping (State, SpecificActionType) -> State) -> (State?, ActionType) -> State {
-    return { (state: State?, action: ActionType) -> State in
+func Reducer<State, SpecificActionType>(
+        initialState: State,
+        reducer: @escaping (State, SpecificActionType) -> State
+    ) -> (State?, Any) -> State {
+    return { (state: State?, action: Any) -> State in
         guard let state = state else { return initialState }
         guard let action = action as? SpecificActionType else { return state }
 
