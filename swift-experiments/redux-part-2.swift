@@ -42,12 +42,25 @@ func Reducer<State, SpecificActionType>(
     }
 }
 
+// ==== combineReducers ====
+
+func combineReducers<State>(initialState: State, reducers: [(State?, Any) -> State]) -> (State?, ActionType) -> State {
+    return { (state: State?, action: ActionType) -> State in
+        // FIXME: How can I remove that `??`?
+        return reducers.reduce(state ?? initialState) { state, reducer in
+            let reducer = Reducer(initialState: initialState, reducer: reducer)
+            return reducer(state, action)
+        }
+    }
+}
+
 // ==== Example Usage ====
 
 enum CounterActions: ActionType {
     case Increase
     case Decrease
 }
+
 let counterReducer = Reducer(initialState: 0) { (state: Int, action: CounterActions) -> Int in
     switch action {
     case .Increase:
