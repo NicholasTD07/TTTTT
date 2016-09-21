@@ -30,25 +30,32 @@ class Store<State> {
 }
 
 
+func Reducer<State, SpecificActionType>(initialState: State, reducer: @escaping (State, SpecificActionType) -> State) -> (State?, ActionType) -> State {
+    return { (state: State?, action: ActionType) -> State in
+        guard let state = state else { return initialState }
+        guard let action = action as? SpecificActionType else { return state }
+
+        return reducer(state, action)
+    }
+}
+
+// ==== Example Usage ====
+
 enum CounterActions: ActionType {
     case Increase
     case Decrease
 }
-
-let counterStore = Store<Int>.init { (state: Int?, action: ActionType) -> Int in
-    let state = state ?? 0
-
-    guard let counterAction = action as? CounterActions else {
-        return state
-    }
-
-    switch counterAction {
+let counterReducer = Reducer(initialState: 0) { (state: Int, action: CounterActions) -> Int in
+    switch action {
     case .Increase:
         return state + 1
     case .Decrease:
         return state - 1
     }
 }
+
+let counterStore = Store<Int>.init(with: counterReducer)
+// ==== Test Suite ====
 
 // initial state is 0
 assert(counterStore.state == 0)
