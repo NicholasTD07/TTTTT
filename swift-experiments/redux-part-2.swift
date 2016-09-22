@@ -3,14 +3,13 @@ protocol ActionType { }
 struct InitialAction: ActionType { }
 
 class Store<State> {
-    var state: State!
+    var state: State
     typealias Reducer = (State?, ActionType) -> State
     final let reducer: Reducer
 
     init(with reducer: @escaping Reducer) {
+        self.state = reducer(nil, InitialAction())
         self.reducer = reducer
-
-        dispatch(InitialAction())
     }
 
     typealias Subscriber = (Store) -> ()
