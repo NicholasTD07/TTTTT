@@ -73,11 +73,9 @@ func Reducer<State, SpecificActionType>(
 
 // ==== combineReducers ====
 
-func combineReducers<State>(initialState: State, reducers: [(State?, Any) -> State]) -> (State?, ActionType) -> State {
-    return { (state: State?, action: ActionType) -> State in
-        // FIXME: How can I remove that `??`?
-        return reducers.reduce(state ?? initialState) { state, reducer in
-            let reducer = Reducer(initialState: initialState, reducer: reducer)
+func combineReducers<State>(_ reducers: [(State?, Any) -> State]) -> (State?, Any) -> State {
+    return { (state: State?, action: Any) -> State in
+        return reducers.reduce(state) { (state, reducer) -> State! in
             return reducer(state, action)
         }
     }
@@ -99,7 +97,15 @@ let counterReducer = Reducer(initialState: 0) { (state: Int, action: CounterActi
     }
 }
 
-let counterStore = Store<Int>.init(with: counterReducer)
+struct SomeAction: ActionType { }
+
+let someReducer = Reducer(initialState: 0) { (state: Int, action: SomeAction) -> Int in
+    return 0
+}
+
+let combinedReducers = combineReducers([counterReducer, someReducer])
+
+let counterStore = Store<Int>.init(with: combinedReducers)
 // ==== Test Suite ====
 
 // initial state is 0
