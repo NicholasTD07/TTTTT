@@ -30,6 +30,9 @@ class Store<State> {
 
 /*
 ### Why the returned reducer takes Any as ActionType?
+
+ActionType is defined as protcol ActionType { }, it's very similar to the Any type
+
 Six scenarios:
 - `action` is of type `SpecificActionType`,
     - if state is `nil`, the reducer will return `initialState`.
