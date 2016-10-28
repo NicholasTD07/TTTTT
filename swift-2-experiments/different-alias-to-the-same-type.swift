@@ -10,4 +10,4 @@ let t1: T1 = {}
 let t2: T2 = {}
 let t3: T3 = {}
 
-[t1, t2, t3].forEach { t($0) }
+[t1, t2, t3].forEach { t(t1: $0) }

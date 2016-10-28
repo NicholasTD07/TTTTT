@@ -1,5 +1,6 @@
 /*
   Conclusions:
+    * Swift 3 has no more ++
     * Swift 2.2 has `++foo` & `bar++`
     * `++foo` increases the value before its statement is excuted
         * e.g. `return ++foo` will return `foo + 1`

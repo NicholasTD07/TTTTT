@@ -3,4 +3,4 @@ import Foundation
 
 let URL = NSURL(string: "")
 
-assert(URL == nil)
+assert(URL != nil)
