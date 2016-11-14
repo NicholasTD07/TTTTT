@@ -23,4 +23,6 @@ struct T {
 }
 
 _ = T()
+// Output: T is created
 _ = T.t
+// Output: t is created
