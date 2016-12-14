@@ -310,6 +310,6 @@ if __name__ == '__main__':
     #     selector.selectedTask,
     # )
 
-    startDate = datetime.datetime(2016, 4, 27)
-    endDate = startDate + datetime.timedelta(days=7)
+    endDate = datetime.datetime.today()
+    startDate = endDate - datetime.timedelta(days=35)
     api.fill(selector.selectedProject, selector.selectedTask, 7.6, startDate, endDate)
