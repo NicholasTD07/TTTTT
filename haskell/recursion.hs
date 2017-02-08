@@ -37,3 +37,16 @@ reverse' (x:xs) = reverse' xs ++ [x]
 repeat' :: a -> [a]
 repeat' x = x: repeat' x
 -- take 5 $ repeat 3
+
+
+zip' :: [a] -> [b] -> [(a, b)]
+zip' [] _ = []
+zip' _ [] = []
+zip' (x:xs) (y:ys) = (x, y): zip' xs ys
+
+elem' :: (Eq a) => a -> [a] -> Bool
+elem' _ [] = False
+elem' x (y:ys)
+    | x == y = True
+    | otherwise = elem' x ys
+
