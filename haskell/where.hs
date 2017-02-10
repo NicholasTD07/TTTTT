@@ -6,3 +6,8 @@ waxOn = x * 5
 triple x = x * 3
 
 waxOff x = triple x
+
+firsts :: [a] -> [a] -> (a, a)
+firsts xs ys = (x, y)
+    where (x:_) = xs
+          (y:_) = ys
