@@ -12,3 +12,9 @@ d2 = {
 
 print(d1 == d1_)
 print(d1 == d2)
+
+d11 = {
+    "s": 1
+}
+
+print(d11 == d1)
