@@ -50,3 +50,14 @@ elem' x (y:ys)
     | x == y = True
     | otherwise = elem' x ys
 
+{-
+ [3,2,1] = (3, [2,1])
+ [2,1] ++ [3] ++ [] = [2,1,3] = (2, [1, 3])
+ [1] + [2] + [3] = [1,2,3] = (1, [2,3])
+ [] + [1] + [2,3] = [1,2,3]
+ -}
+quicksort :: (Ord a) => [a] -> [a]
+quicksort [] = [] -- Does this stop inifinite recursion?
+quicksort (x:xs) = smaller ++ [x] ++ bigger
+    where smaller = quicksort [ x' | x' <- xs, x' < x ]
+          bigger = quicksort [x' | x' <- xs, x' > x]
