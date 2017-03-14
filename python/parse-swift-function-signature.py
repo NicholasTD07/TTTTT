@@ -33,9 +33,11 @@ struct T {
 pattern = r"""
     func # 
     \s+ # space between func and name
-    \w+ # func name
     (
-    [\w\s]+ # args
+    \w+ # func name
+    .*
     )
+    {
 """
 
+print re.findall(pattern, sample, re.X)
