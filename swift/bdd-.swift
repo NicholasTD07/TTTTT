@@ -11,6 +11,9 @@ typealias Action = () -> Void
 struct Description {
     typealias Context = Description
 
+    // value type 'Description' cannot have a stored property that references itself
+    /* let parent: Description? */
+
     func before(_ closure: Action) {
     }
 
