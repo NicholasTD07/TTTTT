@@ -6,7 +6,47 @@ struct Cat {
     }
 }
 
-func describe(_ description: String, closure: () -> Void) { }
+/**
+_
+  cat
+    when being feed
+      feels happy
+*/
+
+struct Example {
+    let description: String
+}
+
+struct ExampleGroup {
+    let description: String
+    var examples = [Example]()
+
+    init(description: String) {
+        self.description = description
+    }
+}
+
+struct World {
+    static let shared = World()
+
+    var groups = [ExampleGroup]()
+    var group: ExampleGroup?
+
+    mutating func run(_ closure: () -> Void, with group: ExampleGroup) {
+        self.group = group
+        closure()
+    }
+}
+
+var world = World.shared
+
+func describe(_ description: String, closure: () -> Void) {
+    let group = ExampleGroup(description: description)
+
+    world.groups.append(group)
+    world.run(closure, with: group)
+}
+
 func context(_ description: String, closure: () -> Void) { }
 func it(_ description: String, _ closure: () -> Void) { }
 
@@ -37,12 +77,6 @@ func == <T>(rhs: Expectation<T>, lhs: Any) where T: Equatable {
 }
 
 describe("cat") {
-    /**
-      cat
-        when being feed
-          feels happy
-    */
-
     var cat: Cat!
 
     before { // before(:suite)
