@@ -16,3 +16,10 @@ let nick: Person = (name: "nick", age: 27)
 
 t1(nick)
 t2(nick)
+
+let t3: (_ name: String, _ age: Int) -> Void = { t in
+// error: value of tuple type '(String, Int)' has no member 'name'
+//     print(t.name)
+// error: value of tuple type '(String, Int)' has no member 'age'
+//     print(t.age)
+}
