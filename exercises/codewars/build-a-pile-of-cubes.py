@@ -48,12 +48,12 @@ n^3 + (n-1)^3 + (n-2)^3 + ... + 2^3 + 1^3
 ---> sqrt(sqrt(cubic_sum)) < n < sqrt(2 * sqrt(cubic_sum))
 """
 
-import math
+import decimal
 
 def find_nb(m):
-    root = math.sqrt(m)
-    low = round(math.sqrt(root))
-    high = round(math.sqrt(2 * root))
+    root = decimal.Decimal(m).sqrt()
+    low = round(root.sqrt())
+    high = round((2 * root).sqrt())
 
     x = high
     y = cubic_sum(x)
@@ -75,6 +75,7 @@ def find_nb(m):
 
 
 def cubic_sum(x):
+    x = decimal.Decimal(x)
     return (((x ** 2 + x) / 2) ** 2)
 
 if __name__ == '__main__':
