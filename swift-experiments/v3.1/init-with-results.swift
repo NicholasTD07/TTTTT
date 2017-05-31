@@ -47,3 +47,13 @@ let userOne = User.createOne(.value(1))(.value("nick"))
 print(userOne)
 let userTwo = User.createTwo(.value(1))(.value("nick"))
 print(userTwo)
+
+// userThree = User.create <*> Result.value(1) <^> Result.value("nick")
+/*
+From thoughtbot/Runes
+// Optional+Functor:
+public func <^> <T, U>(f: T -> U, x: T?) -> U?
+
+// Optional+Applicative:
+public func <*> <T, U>(f: (T -> U)?, x: T?) -> U?
+*/
