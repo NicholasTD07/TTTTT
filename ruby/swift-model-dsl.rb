@@ -12,7 +12,9 @@ module Swift
 
   class DefinitionProxy
     def struct(struct_name, &block)
-      puts "Defining a #{struct_name.capitalize} struct with following attributes"
+      struct_name = struct_name.capitalize
+
+      puts "Defining a #{struct_name} struct with following attributes"
 
       struct = Struct.new
       if block_given?
@@ -43,4 +45,18 @@ Swift.define do
     name :string
     age :uint
   end
+
+  struct :cat do
+    id :uuid
+    name :string
+  end
 end
+
+puts
+
+models = Swift.registry.map do |k, v|
+  {k => v.attributes}
+end
+
+p models
+# [{:User=>{:name=>:string, :age=>:uint}}, {:Cat=>{:id=>:uuid, :name=>:string}}]
