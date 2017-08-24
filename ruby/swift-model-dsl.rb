@@ -52,11 +52,33 @@ Swift.define do
   end
 end
 
-puts
+Swift.registry   # => {:User=>#<Swift::DefinitionProxy::Struct:0x007fe1ad11ab20 @attributes={:name=>:string, :age=>:uint}>, :Cat=>#<Swift::DefinitionProxy::Struct:0x007fe1ad11a418 @attributes={:id=>:uuid, :name=>:string}>}
 
-models = Swift.registry.map do |k, v|
-  {k => v.attributes}
+# TODO: Use a template engine
+models = Swift.registry.map do |struct_name, definition|
+  lets = definition.attributes.map do |name, type|
+    "    public let #{name}: #{type}"
+  end
+  init = %Q(public init(...) {
+    self.x = x
+    self.y = y
+})
+%Q(public struct #{struct_name} {
+#{lets.join "\n"}
+})
 end
 
-p models
-# [{:User=>{:name=>:string, :age=>:uint}}, {:Cat=>{:id=>:uuid, :name=>:string}}]
+puts models[0]           # => nil
+puts models[1]           # => nil
+# >> Defining a User struct with following attributes
+# >> 	 {:name=>:string, :age=>:uint}
+# >> Defining a Cat struct with following attributes
+# >> 	 {:id=>:uuid, :name=>:string}
+# >> public struct User {
+# >>     public let name: string
+# >>     public let age: uint
+# >> }
+# >> public struct Cat {
+# >>     public let id: uuid
+# >>     public let name: string
+# >> }
