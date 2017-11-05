@@ -301,7 +301,10 @@ if __name__ == '__main__':
 
     api = HarvestSeasonAPI()
 
+    # Get prompted to put auth info
     api.promptForLogin()
+    # Or give them as params
+    # api.promptForLogin(username='username', password='password', company='company')
     api.login()
     api.check_login()
     api.update_projects()
