@@ -117,6 +117,9 @@ class HarvestSeasonAPI(object):
 
         if r.status_code == 201:
             print("Added entry on {} for {} hours.".format(date.strftime("%a, %Y-%m-%d"), hours))
+            debug("Response: ")
+            debug(r.text)
+            debug("")
         else:
             print("Soemthing went wrong. Blame the creator/dev.")
             debug(r.text)
@@ -128,7 +131,7 @@ class HarvestSeasonAPI(object):
         for date in datesWithin(startDate, endDate):
             isWeekday = date.weekday() in range(0, 5) # Mon is 0, 0 1 2 3 4 is Mon to Fri
             if not isWeekday:
-                print("")
+                print("Skipped (Weekend)")
                 continue
 
             hours_on_that_date = self.get_hours_on_a_date(date)
@@ -141,6 +144,9 @@ class HarvestSeasonAPI(object):
 
     def get_hours_on_a_date(self, date=None):
         entries = self.get_daily_at_date(date)
+        debug("Entries on the date: {}".format(date))
+        debug(entries)
+        debug("")
         hours = [ entry.hours for entry in entries ]
         return sum(hours)
 
@@ -181,6 +187,10 @@ class HarvestSeasonAPI(object):
             **self.__requests_arguments
         )
 
+        debug("Response: ")
+        debug(r.text)
+        debug("")
+
         if 'projects' in r.text and 'tasks' in r.text:
             self.__projects = r.json()['projects']
 
@@ -191,6 +201,10 @@ class HarvestSeasonAPI(object):
             'https://{}.harvestapp.com/account/who_am_i'.format(self.__company),
             **self.__requests_arguments
         )
+
+        debug("Response: ")
+        debug(r.text)
+        debug("")
 
         if 'user' in r.text and 'first_name' in r.text and 'last_name' in r.text:
             user = r.json()['user']
@@ -312,4 +326,5 @@ if __name__ == '__main__':
 
     endDate = datetime.datetime.today()
     startDate = endDate - datetime.timedelta(days=35)
+    # startDate = datetime.datetime(2017, 2, 1)
     api.fill(selector.selectedProject, selector.selectedTask, 7.6, startDate, endDate)
