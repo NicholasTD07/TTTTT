@@ -1,6 +1,6 @@
 # [Nix](https://github.com/NixOS/nix)
 
-Nix Expression Language
+My learnings with the Nix Expression Language
 
 - Install nix
 - Run `nix repl`
